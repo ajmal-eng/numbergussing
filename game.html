@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess The Number</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #0F172A; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: #1E293B; 
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+            border: 2px solid #38BDF8; 
+            border-radius: 16px;
+            box-shadow: 0 10px 50px rgb(56 189 248);
+            text-align: center;
+            color: #F8FAFC;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 5px 15px rgba(0, 150, 255, 0.3);
+            }
+            to {
+                box-shadow: 0 5px 30px rgba(0, 150, 255, 0.8);
+            }
+        }
+
+        .userdiv p {
+            margin-bottom: 0.75rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background-color: #0F172A;
+            color: #FFF;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        #usersubmit {
+            background-color: #38BDF8;
+            color: #0F172A;
+            margin-bottom: 1rem;
+        }
+
+        #usersubmit:hover {
+            background-color: #7DD3FC;
+        }
+
+        #resetbtn {
+            background-color: transparent;
+            border: 1px solid #475569;
+            color: #94A3B8;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        #resetbtn:hover {
+            background-color: #334155;
+            color: #FFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="userdiv">
+            <p>Welcome to the number guessing game!</p>
+            <p>Enter a number between 1 to 100</p>
+
+            <input type="text" id="userguss" placeholder="Enter your guess">
+            <button id="usersubmit" onclick="submitGuess()">Click to submit</button>
+
+            <p id="message"></p>
+            <p>Attempts left: <span id="userstempt">10</span></p>
+            <button id="resetbtn" onclick="resetGame()">Reset Game</button>
+        </div>
+    </div>
+
+    <script>
+        let computergess = Math.floor(Math.random() * 100) + 1;
+        let atemptleft = 10;
+
+        function submitGuess() {
+            const usergussInput = document.getElementById("userguss");
+            const atemptDisplay = document.getElementById("userstempt");
+            const messagete = document.getElementById("message");
+            const userVal = Number(usergussInput.value);
+
+            if (!userVal || userVal < 1 || userVal > 100) {
+                messagete.innerText = "Please enter a number between 1 to 100!";
+                messagete.style.color = "#f87171";
+                return;
+            }
+
+            atemptleft--;
+            atemptDisplay.innerHTML = atemptleft;
+
+            if (userVal === computergess) {
+                messagete.innerText = "Wow, you're great! 🎉👏";
+                messagete.style.color = "#4ade80";
+                gameOver();
+            } else if (atemptleft === 0) {
+                messagete.innerText = `Sorry, you lost! I guessed ${computergess}. ❌`;
+                messagete.style.color = "#f87171";
+                gameOver();
+            } else if (userVal < computergess) {
+                messagete.innerText = "Please enter a larger value! 👆";
+                messagete.style.color = "#fbbf24";
+            } else {
+                messagete.innerText = "Please enter a smaller value! 👇";
+                messagete.style.color = "#fbbf24";
+            }
+
+            usergussInput.value = "";
+        }
+
+        function gameOver() {
+            document.getElementById("userguss").disabled = true;
+            document.getElementById("usersubmit").disabled = true;
+            document.getElementById("resetbtn").style.display = "block";
+        }
+
+        function resetGame() {
+            computergess = Math.floor(Math.random() * 100) + 1;
+            atemptleft = 10;
+            
+            const usergussInput = document.getElementById("userguss");
+            usergussInput.disabled = false;
+            usergussInput.value = "";
+
+            document.getElementById("usersubmit").disabled = false;
+            document.getElementById("resetbtn").style.display = "none";
+            document.getElementById("message.innerText") = "";
+            document.getElementById("message").innerHTML = "";
+            document.getElementById("userstempt").innerText = atemptleft;
+         
+
+        
+        }
+
+
+    </script>
+</body>
+</html>
